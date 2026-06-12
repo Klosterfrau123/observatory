@@ -7,6 +7,7 @@ import { PROJECTS, type ProjectId, type Project } from '@/lib/projects';
 import { CameraRig }      from './CameraRig';
 import { ProjectObject }  from './ProjectObject';
 import { Particles }      from './Particles';
+import { Nebula }         from './Nebula';
 import { PostProcessing } from './PostProcessing';
 import { InfoPanel }      from './InfoPanel';
 
@@ -50,6 +51,7 @@ export default function ObservatoryScene() {
           />
         ))}
 
+        <Nebula />
         <Particles />
         <PostProcessing />
       </Canvas>
