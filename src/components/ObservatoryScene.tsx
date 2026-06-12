@@ -60,6 +60,7 @@ export default function ObservatoryScene() {
       <div style={{
         position: 'absolute', top: '2rem', left: '2rem',
         pointerEvents: 'none', userSelect: 'none',
+        animation: 'introFade 2.6s ease-out both',
       }}>
         <div style={{
           fontFamily: 'monospace', fontSize: '1.4rem', fontWeight: 700,
