@@ -8,6 +8,7 @@ import { CameraRig }      from './CameraRig';
 import { ProjectObject }  from './ProjectObject';
 import { Particles }      from './Particles';
 import { Nebula }         from './Nebula';
+import { Constellation }  from './Constellation';
 import { PostProcessing } from './PostProcessing';
 import { InfoPanel }      from './InfoPanel';
 
@@ -52,6 +53,7 @@ export default function ObservatoryScene() {
         ))}
 
         <Nebula />
+        <Constellation />
         <Particles />
         <PostProcessing />
       </Canvas>
