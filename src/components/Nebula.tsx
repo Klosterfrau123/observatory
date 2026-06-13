@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useTimeUniform } from '@/lib/useTimeUniform';
 
 const VERT = `
 varying vec3 v_pos;
@@ -52,10 +52,7 @@ void main() {
 
 export function Nebula() {
   const matRef = useRef<THREE.ShaderMaterial>(null);
-
-  useFrame(({ clock }) => {
-    if (matRef.current) matRef.current.uniforms.u_time.value = clock.getElapsedTime();
-  });
+  useTimeUniform(matRef);
 
   return (
     <mesh scale={[120, 120, 120]}>

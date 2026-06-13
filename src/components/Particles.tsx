@@ -1,36 +1,35 @@
 'use client';
 
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { Stars } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useTimeUniform } from '@/lib/useTimeUniform';
+
+const DUST_COUNT = 500;
+
+// Dust positions are fixed for the lifetime of the page, so they're generated
+// once at module load — keeping the random sampling out of the render path.
+const DUST_POSITIONS = (() => {
+  const pos = new Float32Array(DUST_COUNT * 3);
+  for (let i = 0; i < DUST_COUNT; i++) {
+    const r     = 8 + Math.random() * 10;
+    const theta = Math.random() * Math.PI * 2;
+    const phi   = Math.acos(2 * Math.random() - 1);
+    pos[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+    pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    pos[i * 3 + 2] = r * Math.cos(phi);
+  }
+  return pos;
+})();
 
 function DustParticles() {
-  const ref    = useRef<THREE.Points>(null);
   const matRef = useRef<THREE.ShaderMaterial>(null);
-
-  const { positions, count } = useMemo(() => {
-    const count = 500;
-    const pos   = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      const r     = 8 + Math.random() * 10;
-      const theta = Math.random() * Math.PI * 2;
-      const phi   = Math.acos(2 * Math.random() - 1);
-      pos[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
-      pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      pos[i * 3 + 2] = r * Math.cos(phi);
-    }
-    return { positions: pos, count };
-  }, []);
-
-  useFrame(({ clock }) => {
-    if (matRef.current) matRef.current.uniforms.u_time.value = clock.getElapsedTime();
-  });
+  useTimeUniform(matRef);
 
   return (
-    <points ref={ref}>
+    <points>
       <bufferGeometry>
-        <bufferAttribute args={[positions, 3]} attach="attributes-position" count={count} />
+        <bufferAttribute args={[DUST_POSITIONS, 3]} attach="attributes-position" count={DUST_COUNT} />
       </bufferGeometry>
       <shaderMaterial
         ref={matRef}
